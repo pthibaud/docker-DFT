@@ -11,7 +11,7 @@
 
 docker-build:
   # Use the official docker image.
-  image: docker/buildx-bin:latest
+  image: maniator/dind-buildx:latest
   stage: build
   services:
     - docker:dind
