@@ -8,32 +8,18 @@
 #
 # This template uses one generic job with conditional builds
 # for the default branch and all other (MR) branches.
-buildx:
-  image: docker:latest
-  stage: buildx
-  variables:
-    GIT_STRATEGY: none
-  artifacts:
-    paths:
-      - buildx
-    expire_in: 1 hour
-  services:
-    - docker:dind
-  script:
-    - BUILDX_VERSION="v0.7.0" && wget -O ~/.docker/cli-plugins/docker-buildx https://github.com/docker/buildx/releases/download/$BUILDX_VERSION/buildx-$BUILDX_VERSION.linux-amd64 && chmod +x ~/.docker/cli-plugins/docker-build
 
 deploy:
-  image: docker:latest
+  image: docker:stable-git
   stage: deploy
   services:
-    - name: docker:dind
-      command: ["--experimental"]
+    - docker:dind
   before_script:
-    - mkdir -p ~/.docker/cli-plugins
+    - export DOCKER_BUILDKIT=1
+    - export DOCKER_CLI_EXPERIMENTAL=enabled
+    - docker build --platform=local -o . git://github.com/docker/buildx
     - mv buildx ~/.docker/cli-plugins/docker-buildx
-    - docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
   script:
+    - docker buildx build --platform linux/amd64,linux/arm64 -t $CI_REGISTRY_IMAGE .
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
-    - docker buildx create mybuilder
-    - docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 --push -t $CI_REGISTRY_IMAGE .
-
+    - docker push $CI_REGISTRY_IMAGE
