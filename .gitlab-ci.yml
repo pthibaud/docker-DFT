@@ -20,6 +20,20 @@ buildx:
   services:
     - docker:dind
   script:
-    - BUILDX_VERSION="v0.7.0" && wget -O ~/.docker/cli-plugins/docker-buildx https://github.com/docker/buildx/releases/download/$BUILDX_VERSION/buildx-$BUILDX_VERSION.linux-amd64 && chmod +x ~/.docker/cli-plugins/docker-buildx
-    - docker buildx install
+    - BUILDX_VERSION="v0.7.0" && wget -O ~/.docker/cli-plugins/docker-buildx https://github.com/docker/buildx/releases/download/$BUILDX_VERSION/buildx-$BUILDX_VERSION.linux-amd64 && chmod +x ~/.docker/cli-plugins/docker-build
+
+deploy:
+  image: docker:latest
+  stage: deploy
+  services:
+    - name: docker:dind
+      command: ["--experimental"]
+  before_script:
+    - mkdir -p ~/.docker/cli-plugins
+    - mv buildx ~/.docker/cli-plugins/docker-buildx
+    - docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+  script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+    - docker buildx create mybuilder
+    - docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 --push -t $CI_REGISTRY_IMAGE .
 
