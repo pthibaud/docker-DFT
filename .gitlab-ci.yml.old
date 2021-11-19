@@ -8,25 +8,10 @@
 #
 # This template uses one generic job with conditional builds
 # for the default branch and all other (MR) branches.
-buildx:
-  image: docker:latest
-  stage: buildx
-  variables:
-    GIT_STRATEGY: none
-    BUILDX_VERSION: v0.7.0
-  artifacts:
-    paths:
-      - buildx
-    expire_in: 1 hour
-  services:
-    - docker:dind
-  script:
-    - wget -O ~/.docker/cli-plugins/docker-buildx https://github.com/docker/buildx/releases/download/$BUILDX_VERSION/buildx-$BUILDX_VERSION.linux-amd64 && chmod +x ~/.docker/cli-plugins/docker-buildx
-    - docker buildx install
 
 docker-build:
   # Use the official docker image.
-  image: docker:latest
+  image: maniator/dind-buildx:latest
   stage: build
   services:
     - docker:dind
