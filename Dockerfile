@@ -1,4 +1,4 @@
-FROM arm64v8/alpine:latest AS build
+FROM alpine:latest AS build
 RUN apk add --no-cache build-base git gfortran blas-dev lapack-dev fftw-dev bash
 WORKDIR /home
 RUN git clone https://gitlab.com/QEF/q-e.git
