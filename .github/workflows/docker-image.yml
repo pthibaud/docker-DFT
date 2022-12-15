@@ -36,6 +36,6 @@ jobs:
         platforms: linux/amd64,linux/arm64
         push: true
         tags: |
-          ghcr.io/pthibaud/docker-DFT:latest
-        cache-from: type=registry,ref=pthibaud/docker-DFT:latest
+          ghcr.io/pthibaud/docker-dft:latest
+        cache-from: type=registry,ref=pthibaud/docker-dft:latest
         cache-to: type=inline
