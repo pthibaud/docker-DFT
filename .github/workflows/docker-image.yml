@@ -37,5 +37,5 @@ jobs:
         push: true
         tags: |
           ghcr.io/pthibaud/docker-dft:latest
-        cache-from: type=registry,ref=pthibaud/docker-dft:latest
-        cache-to: type=inline
+#        cache-from: type=registry,ref=pthibaud/docker-dft:latest
+#        cache-to: type=inline
