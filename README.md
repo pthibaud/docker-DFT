@@ -3,4 +3,4 @@ Dockerfile for DFT and MD computer codes
 - [ABINIT](https://www.abinit.org/)
 - [LAMMPS](https://www.lammps.org/#gsc.tab=0) 
 - and several other analysis tools
-on alpine linux
+on linux
