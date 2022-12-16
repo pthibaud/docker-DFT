@@ -3,7 +3,7 @@ FROM debian:latest AS build
 ENV QE=qe-7.1
 ENV ABINIT_VERSION=9.6.2
 ENV LAMMPS=stable_23Jun2022_update2
-ENV WORKERS=1
+ENV WORKERS=
 LABEL org.opencontainers.image.authors="pthibaud@users.noreply.github.com"
 #RUN apk add --no-cache build-base git gfortran blas-dev lapack-dev fftw-dev bash cmake libxml2-dev netcdf
 RUN apt-get update
