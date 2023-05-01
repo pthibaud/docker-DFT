@@ -35,7 +35,8 @@ WORKDIR /home/md/lammps-${LAMMPS}/build
 RUN pip install setuptools
 RUN cmake -C../cmake/presets/most.cmake -DBUILD_SHARED_LIBS=on -DLAMMPS_EXCEPTIONS=on \
     -DPKG_PYTHON=on -DCMAKE_INSTALL_PREFIX=/usr/local -DBUILD_OMP=yes \
-    -DCMAKE_CXX_COMPILER=g++-10 ../cmake
+    -DCMAKE_CXX_COMPILER=g++-10 -DCMAKE_C_COMPILER=gcc-10 \
+    -DCMAKE_Fortran_COMPILER=gfortran-10../cmake
 # RUN make -j ${WORKER} && make install
 #WORKDIR /home/md
 # this produce an error 
