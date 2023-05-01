@@ -6,7 +6,9 @@ ENV LAMMPS=stable_23Jun2022_update4
 ENV WORKER=4
 LABEL org.opencontainers.image.authors="pthibaud@users.noreply.github.com"
 RUN apt-get update
-RUN apt-get install wget git gfortran g++-10 libblas-dev liblapack-dev libfftw3-dev cmake libxml2-dev libnetcdff-dev libxc-dev python3 python3-dev pip libzstd-dev libopenmpi-dev -y
+RUN apt-get install wget git gfortran g++-10 libblas-dev liblapack-dev libfftw3-dev \
+    cmake libxml2-dev libnetcdff-dev libxc-dev python3 python3-dev pip libzstd-dev \
+    libopenmpi-dev -y
 # Quantum ESPRESSO
 WORKDIR /home/dft
 #RUN wget -qO- https://gitlab.com/QEF/q-e/-/archive/${QE}/q-e-${QE}.tar.gz | tar xz
@@ -31,7 +33,9 @@ WORKDIR /home/md
 RUN wget -qO- https://github.com/lammps/lammps/archive/refs/tags/${LAMMPS}.tar.gz | tar xz 
 WORKDIR /home/md/lammps-${LAMMPS}/build
 RUN pip install setuptools
-RUN cmake -C../cmake/presets/most.cmake -DBUILD_SHARED_LIBS=on -DLAMMPS_EXCEPTIONS=on -DPKG_PYTHON=on -DCMAKE_INSTALL_PREFIX=/usr/local -DCMAKE_CXX_COMPILER=g++-10 ../cmake
+RUN cmake -C../cmake/presets/most.cmake -DBUILD_SHARED_LIBS=on -DLAMMPS_EXCEPTIONS=on \
+    -DPKG_PYTHON=on -DCMAKE_INSTALL_PREFIX=/usr/local -DBUILD_OMP=yes \
+    -DCMAKE_CXX_COMPILER=g++-10 ../cmake
 # RUN make -j ${WORKER} && make install
 #WORKDIR /home/md
 # this produce an error 
