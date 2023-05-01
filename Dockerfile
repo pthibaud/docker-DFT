@@ -31,7 +31,7 @@ WORKDIR /home/md
 RUN wget -qO- https://github.com/lammps/lammps/archive/refs/tags/${LAMMPS}.tar.gz | tar xz 
 WORKDIR /home/md/lammps-${LAMMPS}/build
 RUN pip install setuptools
-RUN cmake -C../cmake/presets/most.cmake -DBUILD_SHARED_LIBS=on -DLAMMPS_EXCEPTIONS=on -DPKG_PYTHON=on -DCMAKE_INSTALL_PREFIX=/usr/local -DCMAKE_CXX_COMPILER=g++-10 ../cmake
+RUN cmake -C../cmake/presets/most.cmake -DBUILD_SHARED_LIBS=on -DLAMMPS_EXCEPTIONS=on -DPKG_PYTHON=on -DPKG_SPIN=yes -DCMAKE_INSTALL_PREFIX=/usr/local -DCMAKE_CXX_COMPILER=g++-10 ../cmake
 # RUN make -j ${WORKER} && make install
 #WORKDIR /home/md
 # this produce an error 
