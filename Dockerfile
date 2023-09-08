@@ -1,6 +1,4 @@
-#FROM alpine:latest AS build
 #FROM debian:latest AS build
-#ENV QE=qe-7.2
 FROM aiidateam/aiida-core AS build
 ENV ABINIT_VERSION=9.10.3
 ENV LAMMPS=stable_2Aug2023
@@ -12,21 +10,18 @@ RUN apt-get install wget git gcc-11 gfortran-11 g++-11 libblas-dev liblapack-dev
     libopenmpi-dev -y
 # Quantum ESPRESSO
 WORKDIR /home/dft
-#RUN wget -qO- https://gitlab.com/QEF/q-e/-/archive/${QE}/q-e-${QE}.tar.gz | tar xz
-#WORKDIR /home/dft/q-e-${QE}
 RUN git clone https://gitlab.com/QEF/q-e.git
 WORKDIR /home/dft/q-e
 RUN ./configure --prefix=/usr/local --enable-parallel=yes
-# RUN make -j ${WORKER} all && make install
+#RUN make -j ${WORKER} all && make install
 #WORKDIR /home/dft
-#RUN rm -fr q-e-${QE}
 #RUN rm -fr q-e
 # ABINIT
 WORKDIR /home/dft
 RUN wget -qO- https://www.abinit.org/sites/default/files/packages/abinit-${ABINIT_VERSION}.tar.gz | tar xz
 WORKDIR /home/dft/abinit-${ABINIT_VERSION}
 RUN ./configure --prefix=/usr/local --with-libxml2 -enable-openmp --with-mpi
-# RUN make -j ${WORKER} && make install
+#RUN make -j ${WORKER} && make install
 #WORKDIR /home/dft
 #RUN rm -fr abinit-${ABINIT_VERSION}
 # LAMMPS 
@@ -38,7 +33,8 @@ RUN cmake -C../cmake/presets/most.cmake -DBUILD_SHARED_LIBS=on -DLAMMPS_EXCEPTIO
     -DPKG_PYTHON=on -DCMAKE_INSTALL_PREFIX=/usr/local -DBUILD_OMP=yes \
     -DCMAKE_CXX_COMPILER=g++-11 -DCMAKE_C_COMPILER=gcc-11 \
     -DCMAKE_Fortran_COMPILER=gfortran-11 ../cmake
-# RUN make -j ${WORKER} && make install
-#WORKDIR /home/md
+#RUN make -j ${WORKER} && make install
+WORKDIR /home/md
 # this produce an error 
-#RUN rm -fr ./lammps-${LAMMPS}
+# RUN rm -fr ./lammps-${LAMMPS}
+ENV LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:/usr/local/lib"
