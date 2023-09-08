@@ -1,13 +1,13 @@
 #FROM alpine:latest AS build
 #FROM debian:latest AS build
-#ENV QE=qe-7.1
+#ENV QE=qe-7.2
 FROM aiidateam/aiida-core AS build
-ENV ABINIT_VERSION=9.8.4
-ENV LAMMPS=stable_23Jun2022_update4
+ENV ABINIT_VERSION=9.10.3
+ENV LAMMPS=stable_2Aug2023
 ENV WORKER=4
 LABEL org.opencontainers.image.authors="pthibaud@users.noreply.github.com"
-RUN apt-get update
-RUN apt-get install wget git gfortran g++-10 libblas-dev liblapack-dev libfftw3-dev \
+RUN apt-get update && apt-get upgrade -y && apt-get dist-upgrade -y && apt-get autoclean && apt-get autoremove -y 
+RUN apt-get install wget git gcc-11 gfortran-11 g++-11 libblas-dev liblapack-dev libfftw3-dev \
     cmake libxml2-dev libnetcdff-dev libxc-dev python3 python3-dev pip libzstd-dev \
     libopenmpi-dev -y
 # Quantum ESPRESSO
@@ -36,9 +36,9 @@ WORKDIR /home/md/lammps-${LAMMPS}/build
 RUN pip install setuptools
 RUN cmake -C../cmake/presets/most.cmake -DBUILD_SHARED_LIBS=on -DLAMMPS_EXCEPTIONS=on \
     -DPKG_PYTHON=on -DCMAKE_INSTALL_PREFIX=/usr/local -DBUILD_OMP=yes \
-    -DCMAKE_CXX_COMPILER=g++-10 -DCMAKE_C_COMPILER=gcc-10 \
-    -DCMAKE_Fortran_COMPILER=gfortran-10 ../cmake
+    -DCMAKE_CXX_COMPILER=g++-11 -DCMAKE_C_COMPILER=gcc-11 \
+    -DCMAKE_Fortran_COMPILER=gfortran-11 ../cmake
 # RUN make -j ${WORKER} && make install
 #WORKDIR /home/md
 # this produce an error 
-#RUN rm -fr lammps-${LAMMPS}
+#RUN rm -fr ./lammps-${LAMMPS}
