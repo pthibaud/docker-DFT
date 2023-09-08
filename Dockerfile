@@ -1,5 +1,6 @@
 #FROM alpine:latest AS build
-FROM debian:latest AS build
+#FROM debian:latest AS build
+FROM aiidateam/aiida-core AS build
 ENV QE=qe-7.1
 ENV ABINIT_VERSION=9.6.2
 ENV LAMMPS=stable_23Jun2022_update2
