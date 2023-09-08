@@ -7,7 +7,7 @@ LABEL org.opencontainers.image.authors="pthibaud@users.noreply.github.com"
 RUN apt-get update && apt-get upgrade -y && apt-get dist-upgrade -y && apt-get autoclean && apt-get autoremove -y 
 RUN apt-get install wget git gcc-11 gfortran-11 g++-11 libblas-dev liblapack-dev libfftw3-dev \
     cmake libxml2-dev libnetcdff-dev libxc-dev python3 python3-dev pip libzstd-dev \
-    libopenmpi-dev -y
+    libopenmpi-dev sudo -y
 # Quantum ESPRESSO
 WORKDIR /home/dft
 RUN git clone https://gitlab.com/QEF/q-e.git
@@ -37,4 +37,10 @@ RUN cmake -C../cmake/presets/most.cmake -DBUILD_SHARED_LIBS=on -DLAMMPS_EXCEPTIO
 WORKDIR /home/md
 # this produce an error 
 # RUN rm -fr ./lammps-${LAMMPS}
+# update environment variable to get access to shared libraries
 ENV LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:/usr/local/lib"
+# Aiida stuffs with sudo privileges
+RUN useradd -m aiida && echo "aiida:aiida" | chpasswd && adduser aiida sudo
+RUN echo "aiida ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers && \
+    chmod 0440 /etc/sudoers && \
+    chmod g+w /etc/passwd
