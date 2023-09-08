@@ -44,3 +44,6 @@ RUN useradd -m aiida && echo "aiida:aiida" | chpasswd && adduser aiida sudo
 RUN echo "aiida ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers && \
     chmod 0440 /etc/sudoers && \
     chmod g+w /etc/passwd
+# Activating tab-completion
+WORKDIR /home/aiida
+RUN echo "eval \$(_VERDI_COMPLETE=bash_source verdi)" >> ~/.bashrc

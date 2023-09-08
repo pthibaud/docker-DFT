@@ -27,3 +27,9 @@ podman run -d --name aiida -v aiida-home-data:/home/aiida:Z localhost/aiida-dft:
 ```bash
 podman exec -it --user aiida aiida /bin/bash 
 ```
+
+5. Check setup inside the container
+```bash
+verdi status
+```
+
