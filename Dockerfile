@@ -47,3 +47,4 @@ RUN echo "aiida ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers && \
 # Activating tab-completion
 WORKDIR /home/aiida
 RUN echo "eval \$(_VERDI_COMPLETE=bash_source verdi)" >> ~/.bashrc
+#RUN pip install --user aiida-quantumespresso
