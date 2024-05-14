@@ -1,5 +1,5 @@
 #FROM debian:latest AS build
-FROM aiidateam/aiida-core-with-services AS build
+FROM aiidateam/aiida-core AS build
 #ENV ABINIT_VERSION=9.10.3
 #ENV LAMMPS=stable_2Aug2023
 ENV WORKER=8
@@ -56,4 +56,6 @@ RUN echo "aiida ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers && \
 # Activating tab-completion
 WORKDIR /home/aiida
 RUN echo "eval \$(_VERDI_COMPLETE=bash_source verdi)" >> ~/.bashrc
+
+USER aiida
 RUN pip install --user aiida-quantumespresso
