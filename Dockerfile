@@ -1,8 +1,9 @@
 #FROM debian:latest AS build
-FROM aiidateam/aiida-core AS build
+FROM aiidateam/aiida-core-with-services AS build
 #ENV ABINIT_VERSION=9.10.3
 #ENV LAMMPS=stable_2Aug2023
 ENV WORKER=8
+USER root
 LABEL org.opencontainers.image.authors="pthibaud@users.noreply.github.com"
 RUN apt-get update && apt-get upgrade -y && apt-get dist-upgrade -y && apt-get autoclean && apt-get autoremove -y 
 RUN apt-get install wget git gcc gfortran g++ libblas-dev liblapack-dev libfftw3-dev \
@@ -48,14 +49,17 @@ RUN rm -fr q-e
 ENV LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:/usr/local/lib"
 
 # Aiida stuffs with sudo privileges
-RUN useradd -m aiida && echo "aiida:aiida" | chpasswd && adduser aiida sudo
-RUN echo "aiida ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers && \
-    chmod 0440 /etc/sudoers && \
-    chmod g+w /etc/passwd
+#RUN useradd -m aiida && echo "aiida:aiida" | chpasswd && adduser aiida sudo
+#RUN adduser aiida sudo
+#RUN echo "aiida ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers && \
+#    chmod 0440 /etc/sudoers && \
+#    chmod g+w /etc/passwd
 
 # Activating tab-completion
-WORKDIR /home/aiida
-RUN echo "eval \$(_VERDI_COMPLETE=bash_source verdi)" >> ~/.bashrc
+#WORKDIR /home/aiida
+#RUN echo "eval \$(_VERDI_COMPLETE=bash_source verdi)" >> ~/.bashrc
 
 USER aiida
 RUN pip install --user aiida-quantumespresso
+
+WORKDIR /home/aiida
