@@ -20,7 +20,10 @@ WORKDIR /home/dft
 RUN rm -fr q-e
 
 # Wannier90
-#TODO
+#WORKDIR /home/dft
+#RUN git clone https://github.com/aiidateam/aiida-wannier90-workflows.git
+#WORKDIR /home/dft/aiida-wannier90-workflows
+#RUN pip install -e .
 
 # ABINIT
 #WORKDIR /home/dft
