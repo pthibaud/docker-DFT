@@ -20,10 +20,9 @@ WORKDIR /home/dft
 RUN rm -fr q-e
 
 # Wannier90
-#WORKDIR /home/dft
-#RUN git clone https://github.com/aiidateam/aiida-wannier90-workflows.git
-#WORKDIR /home/dft/aiida-wannier90-workflows
-#RUN pip install -e .
+WORKDIR /home/dft
+RUN git clone https://github.com/aiidateam/aiida-wannier90-workflows.git
+
 
 # ABINIT
 #WORKDIR /home/dft
@@ -64,5 +63,7 @@ ENV LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:/usr/local/lib"
 
 USER aiida
 RUN pip install --user aiida-quantumespresso
+WORKDIR /home/dft/aiida-wannier90-workflows
+RUN pip install -e .
 
 WORKDIR /home/aiida
