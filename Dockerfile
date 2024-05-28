@@ -23,14 +23,16 @@ RUN rm -fr q-e
 WORKDIR /home/dft
 RUN git clone https://github.com/aiidateam/aiida-wannier90-workflows.git
 
-# Wannier90
-WORKDIR /home/dft
-RUN git clone https://github.com/wannier-developers/wannier90.git
-WORKDIR wannier90
-RUN cp ./config/make.inc.gfort ./make.inc
-RUN make -j ${WORKER} default
-WORKDIR /home/dft
-RUN rm -fr wannier90
+# Wannier90 (already installed via Quantum Espresso)
+#WORKDIR /home/dft
+#RUN git clone https://github.com/wannier-developers/wannier90.git
+#WORKDIR wannier90
+#RUN cp ./config/make.inc.gfort ./make.inc
+#RUN make -j ${WORKER} wannier
+#RUN make -j ${WORKER} post
+#RUN make install
+#WORKDIR /home/dft
+#RUN rm -fr wannier90
 
 
 # ABINIT
