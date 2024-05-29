@@ -7,5 +7,5 @@ Dockerfile for DFT and MD computer codes inside [AiiDA-code-with-services](https
 on linux
 
 ```bash
-podman build -t dockerDFT .
+podman build --format=docker --build-arg=proxy=<CEA_proxy> -t dockerDFT .
 ```

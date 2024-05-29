@@ -1,5 +1,6 @@
 #FROM debian:latest AS build
 FROM aiidateam/aiida-core-with-services AS build
+ARG proxy
 #ENV ABINIT_VERSION=9.10.3
 #ENV LAMMPS=stable_2Aug2023
 ENV WORKER=8
@@ -78,3 +79,7 @@ WORKDIR /home/dft/aiida-wannier90-workflows
 RUN pip install -e .
 
 WORKDIR /home/aiida
+
+ARG proxy
+RUN echo "export https_proxy=${proxy}" >> .bashrc
+RUN echo "export http_proxy=${proxy}" >> .bashrc
