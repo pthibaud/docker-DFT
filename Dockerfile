@@ -77,6 +77,7 @@ USER aiida
 RUN pip install --user aiida-quantumespresso
 WORKDIR /home/dft/aiida-wannier90-workflows
 RUN pip install -e .
+RUN conda install jupyter
 
 WORKDIR /home/aiida
 
