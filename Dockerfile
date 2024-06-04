@@ -1,8 +1,7 @@
-#FROM debian:latest AS build
 FROM aiidateam/aiida-core-with-services AS build
 
 ARG proxy
-Arg workers
+ARG workers
 
 #ENV ABINIT_VERSION=9.10.3
 #ENV LAMMPS=stable_2Aug2023
@@ -28,17 +27,6 @@ RUN rm -fr q-e
 WORKDIR /home/dft
 RUN git clone https://github.com/aiidateam/aiida-wannier90-workflows.git
 
-# Wannier90 (already installed via Quantum Espresso)
-#WORKDIR /home/dft
-#RUN git clone https://github.com/wannier-developers/wannier90.git
-#WORKDIR wannier90
-#RUN cp ./config/make.inc.gfort ./make.inc
-#RUN make -j ${WORKER} wannier
-#RUN make -j ${WORKER} post
-#RUN make install
-#WORKDIR /home/dft
-#RUN rm -fr wannier90
-
 # ABINIT
 #WORKDIR /home/dft
 #RUN wget -qO- https://www.abinit.org/sites/default/files/packages/abinit-${ABINIT_VERSION}.tar.gz | tar xz
@@ -60,21 +48,10 @@ RUN git clone https://github.com/aiidateam/aiida-wannier90-workflows.git
 #RUN make -j ${WORKER} && make install
 #WORKDIR /home/md
 # this produce an error 
-# RUN rm -fr ./lammps-${LAMMPS}
+#RUN rm -fr ./lammps-${LAMMPS}
 
 # update environment variable to get access to shared libraries
 ENV LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:/usr/local/lib"
-
-# Aiida stuffs with sudo privileges
-#RUN useradd -m aiida && echo "aiida:aiida" | chpasswd && adduser aiida sudo
-#RUN adduser aiida sudo
-#RUN echo "aiida ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers && \
-#    chmod 0440 /etc/sudoers && \
-#    chmod g+w /etc/passwd
-
-# Activating tab-completion
-#WORKDIR /home/aiida
-#RUN echo "eval \$(_VERDI_COMPLETE=bash_source verdi)" >> ~/.bashrc
 
 USER aiida
 RUN pip install --user aiida-quantumespresso
