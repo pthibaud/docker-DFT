@@ -1,11 +1,15 @@
 #FROM debian:latest AS build
 FROM aiidateam/aiida-core-with-services AS build
+
 ARG proxy
+Arg workers
+
 #ENV ABINIT_VERSION=9.10.3
 #ENV LAMMPS=stable_2Aug2023
-ENV WORKER=8
+ENV WORKER=${workers}
 USER root
 LABEL org.opencontainers.image.authors="pthibaud@users.noreply.github.com"
+
 RUN apt-get update && apt-get upgrade -y && apt-get dist-upgrade -y && apt-get autoclean && apt-get autoremove -y 
 RUN apt-get install wget git gcc gfortran g++ libblas-dev liblapack-dev libfftw3-dev \
     cmake libxml2-dev libnetcdff-dev libxc-dev python3 python3-dev pip libzstd-dev \
@@ -34,7 +38,6 @@ RUN git clone https://github.com/aiidateam/aiida-wannier90-workflows.git
 #RUN make install
 #WORKDIR /home/dft
 #RUN rm -fr wannier90
-
 
 # ABINIT
 #WORKDIR /home/dft
