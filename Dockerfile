@@ -54,7 +54,7 @@ RUN git clone https://github.com/aiidateam/aiida-wannier90-workflows.git
 ENV LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:/usr/local/lib"
 
 USER aiida
-RUN pip install --user aiida-quantumespresso
+RUN pip install --user aiida-quantumespresso tb2j
 WORKDIR /home/dft/aiida-wannier90-workflows
 RUN pip install -e .
 RUN conda install -y jupyter
