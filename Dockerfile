@@ -23,10 +23,6 @@ RUN make -j ${WORKER} all && make install
 WORKDIR /home/dft
 RUN rm -fr q-e
 
-# Wannier90-Workflows
-WORKDIR /home/dft
-RUN git clone https://github.com/aiidateam/aiida-wannier90-workflows.git
-
 # ABINIT
 #WORKDIR /home/dft
 #RUN wget -qO- https://www.abinit.org/sites/default/files/packages/abinit-${ABINIT_VERSION}.tar.gz | tar xz
@@ -53,10 +49,19 @@ RUN git clone https://github.com/aiidateam/aiida-wannier90-workflows.git
 # update environment variable to get access to shared libraries
 ENV LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:/usr/local/lib"
 
+# Wannier90-Workflows
+WORKDIR /home/dft
+RUN git clone https://github.com/aiidateam/aiida-wannier90-workflows.git
+
 USER aiida
-RUN pip install --user aiida-quantumespresso
+
 WORKDIR /home/dft/aiida-wannier90-workflows
 RUN pip install -e .
+
+# Quantum Espresso + TB2J + AiiDA_Shell 
+RUN pip install --user aiida-quantumespresso tb2j aiida_shell
+
+# Jupyter
 RUN conda install -y jupyter
 
 WORKDIR /home/aiida
